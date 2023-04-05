@@ -1,5 +1,7 @@
+
+//Get form submission responses
 function emailSubmissions(e) {
-    const emailList = ["your_email_goes_here"];
+    const emailList = ["your_email(s)_goes_here"];
     const form = FormApp.openById('form_ID_goes_here');
     const responses = form.getResponses();
     const latestResponse = responses[responses.length - 1];
@@ -17,6 +19,7 @@ function emailSubmissions(e) {
     return submissionAnswers;
   }
   
+  //Send email to all recipients defined in 'emailList' const
   function sendEmail(emailList, submissionAnswers, address) {
     const html = `
       <p style="font-size: 20px">Email Submissions</p>
@@ -28,7 +31,6 @@ function emailSubmissions(e) {
       DOB: ${submissionAnswers[2]}<br>
       Favorite color: ${submissionAnswers[4]}</p><br>
       <a href="spreadsheet_ID_goes_here">Click to access spreadsheet!</a>`;
-  
   
     GmailApp.sendEmail(emailList,submissionAnswers[0]+" "+submissionAnswers[1]+" : "+submissionAnswers[3],
     "",
