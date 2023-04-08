@@ -1,7 +1,7 @@
 
 //Get form submission responses
 function emailSubmissions(e) {
-    const emailList = ["your_email(s)_goes_here"]; //add your email list here!
+    const emailList = ["your_email(s)_goes_here"];
     const form = FormApp.openById('form_ID_goes_here');
     const responses = form.getResponses();
     const latestResponse = responses[responses.length - 1];
