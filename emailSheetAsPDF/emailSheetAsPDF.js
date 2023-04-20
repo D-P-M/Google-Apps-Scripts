@@ -1,3 +1,14 @@
+// function testExportSheetAsPDF() {
+//  let blob = getFileAsBlob("https://docs.google.com/spreadsheets/d/12ThMWz470re_VEqOnt1bw0MXHHJxi1KxjUqpDz93L1I/export?format=pdf&portrait=false&size=b5&gridlines=false");
+//  Logger.log("Content type: " + blob.getContentType());
+//  Logger.log("File size in MB: " + blob.getBytes().length / 1000000);
+// }
+
+
+const SS = SpreadsheetApp.getActiveSpreadsheet();
+const TABS = SS.getSheets();
+const SSID = SS.getId();
+
 function getFileAsBlob(exportUrl) {
  let response = UrlFetchApp.fetch(exportUrl, {
      muteHttpExceptions: true,
@@ -8,8 +19,6 @@ function getFileAsBlob(exportUrl) {
  return response.getBlob();
 }
 
-
-
 function getSheetName(){
   let sheetName = SpreadsheetApp.getActive().getSheetName();
   console.log(sheetName)
@@ -17,7 +26,7 @@ function getSheetName(){
 }
 
 function getSheetEmail(){
-  let sheetEmail = SpreadsheetApp.getActiveSheet().getRange(1,12).getDisplayValues().toString();
+  let sheetEmail = SpreadsheetApp.getActiveSheet().getRange(1,2).getDisplayValues().toString();
   console.log(sheetEmail)
   return sheetEmail;
 }
@@ -31,14 +40,12 @@ function getSheetIdFromName(sheetName) {
  return null;
 }
 
-// console.log(getSheetIdFromName())
-
 
 function sendExportedSheetAsPDFAttachment() {
   
   let name = getSheetName();
   let email = getSheetEmail();
-  const date = getDate();
+  // const date = getDate();
 
   let sheetGID = getSheetIdFromName();
   const portrait = true;
@@ -64,40 +71,28 @@ function sendExportedSheetAsPDFAttachment() {
 
 
   // HTML EMAIL TEMPLATE 
-  const emailTemp = HtmlService.createTemplateFromFile("EMAIL TEMPLATE");
+  const emailTemp = HtmlService.createTemplateFromFile("emailTemp");
   emailTemp.name = name;
  
   const htmlForEmail = emailTemp.evaluate().getContent();
 
-  // Get GMAIL ALIASES
-  const aliases = GmailApp.getAliases();
-  Logger.log(aliases);
-  Logger.log(aliases[0]);
-
-    // Send email from alias
-    if (aliases.length > 0) {
-    GmailApp.sendEmail(email,date+" PAY • "+name,
+    GmailApp.sendEmail(email,name,
     "",
-      { name: 'ACES PAYROLL',from:aliases[3],
+      { name: 'PDF EMAIL',
       htmlBody: htmlForEmail,
-      attachments: [blob.setName(date+" PAY • "+name)]
+      attachments: [blob.setName(name)]
       });
-    }
-
-    exportSheetAsPDFToDrive(blob);
-    dialogueBox(name);
+  
+    exportSheetAsPDFToDrive(blob);  
 }
 
+
 function exportSheetAsPDFToDrive(blob) {
-  const date = getDate();
+  const driveID = "1pWx0dMFWs__Nv6ekUArP4To-7FB0LaYo";
   let name = getSheetName();
 
-  blob.setName(date+" PAY • "+name)
-  let file = DriveApp.getFolderById(driveIDEmailed).createFile(blob);
+  blob.setName(name)
+  let file = DriveApp.getFolderById(driveID).createFile(blob);
   Logger.log(file.getUrl());
 }
 
-function dialogueBox(name){
-  // The code below displays "hello world" in a dialog box with an OK button
-  Browser.msgBox('📤 A PDF of '+name+ "'s pay has been emailed.")
-}
