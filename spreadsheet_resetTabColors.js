@@ -1,3 +1,5 @@
+
+//This function resets all tab colors in a spreadsheet
 function resetTabColors() {
     var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
     var sheets = spreadsheet.getSheets();
