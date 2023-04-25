@@ -1,14 +1,12 @@
-// function testExportSheetAsPDF() {
-//  let blob = getFileAsBlob("https://docs.google.com/spreadsheets/d/12ThMWz470re_VEqOnt1bw0MXHHJxi1KxjUqpDz93L1I/export?format=pdf&portrait=false&size=b5&gridlines=false");
-//  Logger.log("Content type: " + blob.getContentType());
-//  Logger.log("File size in MB: " + blob.getBytes().length / 1000000);
-// }
-
+/* 
+Email a PDF attachment of an active Google Sheet from the Email address located in cell 'B1'
+and then save it to a folder in Google Drive 
+*/
 
 const ss = SpreadsheetApp.getActiveSpreadsheet();
 const tabs = ss.getSheets();
 const ssId = ss.getId();
-const driveId = "1pWx0dMFWs__Nv6ekUArP4To-7FB0LaYo";
+const driveId = "put Google Drive ID here";
 
 function getFileAsBlob(exportUrl) {
   const response = UrlFetchApp.fetch(exportUrl, {
@@ -24,7 +22,7 @@ function getCurrentSheetInfo() {
   const sheet = SpreadsheetApp.getActiveSheet();
   const sheetName = sheet.getName();
   const sheetId = sheet.getSheetId();
-  const sheetEmail = sheet.getRange(1, 2).getDisplayValue();
+  const sheetEmail = sheet.getRange(1, 2).getDisplayValue(); //get the email located in cell 'B1' getRange(1,2)
   return { sheetName, sheetId, sheetEmail };
 }
 
