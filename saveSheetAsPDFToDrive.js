@@ -4,39 +4,35 @@ This script saves all sheet in a Google Sheet as a PDF to Google Drive
 
 
 function saveSheetsToDrive() {
-
-    const SS = SpreadsheetApp.getActiveSpreadsheet();
-    const SSID = SS.getId();
-    const driveID = "put drive ID here!";
+    const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+    const spreadsheetId = spreadsheet.getId();
+    const driveFolderId = "Drive ID goes here!";
+    const fileName = spreadsheet.getName();
   
-    let name = SpreadsheetApp.getActiveSpreadsheet().getName();
+    const pdfOptions = {
+      portrait: true,
+      size: 'a4',
+      horizontal_alignment: 'CENTER',
+      top_margin: 0.75,
+      bottom_margin: 0.75,
+      left_margin: 0.25,
+      right_margin: 0.25,
+      gridlines: false,
+      scale: 4,
+      printnotes: false,
+      selection: true
+    };
   
-    const portrait = true;
-    const size = 'a4';
-    const align = 'CENTER';
-    const topMargin = 0.75;
-    const bottomMargin = 0.75;
-    const leftMargin = 0.25;
-    const rightMargin = 0.25;
-    const gridlines = false;
-    const scale = 4;
-    const printnotes = false;
-    
-    let blob = getFileAsBlob("https://docs.google.com/spreadsheets/d/"+SSID+"/export?format=pdf&portrait="+portrait
-                                                                                              +"&size="+size
-                                                                                              +"&horizontal_alignment="+align
-                                                                                              +"&top_margin="+topMargin
-                                                                                              +"&bottom_margin="+bottomMargin
-                                                                                              +"&left_margin="+leftMargin
-                                                                                              +"&right_margin="+rightMargin
-                                                                                              +"&gridlines="+gridlines
-                                                                                              +"&scale="+scale
-                                                                                              +"&printnotes="+printnotes
-                                                                                              +"&selection=true");
+    const pdfBlob = getFileAsBlob(`https://docs.google.com/spreadsheets/d/${spreadsheetId}/export?format=pdf&${Object.entries(pdfOptions).map(([k, v]) => `${k}=${v}`).join('&')}`);
+    pdfBlob.setName(fileName);
   
-    blob.setName(name)
-    let file = DriveApp.getFolderById(driveID).createFile(blob);
+    const folder = DriveApp.getFolderById(driveFolderId);
+    const file = folder.createFile(pdfBlob);
     Logger.log(file.getUrl());
-  
   }
+  
+  
+  
+  
+  
   
