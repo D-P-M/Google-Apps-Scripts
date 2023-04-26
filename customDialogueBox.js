@@ -1,3 +1,5 @@
+//Set up a trigger with sidebarMenu in order to initiate the menu of open/refresh
+
 function sidebarMenu() {
     SpreadsheetApp.getUi() // Or DocumentApp or SlidesApp or FormApp.
         .createMenu('Custom Menu')

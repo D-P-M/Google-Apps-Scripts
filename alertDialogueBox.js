@@ -1,4 +1,7 @@
 /*
+
+Set up a trigger with sidebarMenu in order to initiate the menu of open/refresh
+
 From Google Documentation:
 "An alert is a pre-built dialog box that opens inside a Google Docs, Sheets, Slides, 
 or Forms editor. It displays a message and an "OK" button; a title and alternative buttons are optional. 
